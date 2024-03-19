@@ -53,21 +53,21 @@ VALIDATE $? "creating app directory" &>> $LOGFILE
 
 curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip
 
-VALIDATE $? "downloading catalouge application" &>> $LOGFILE
+VALIDATE $? "downloading catalogue application" &>> $LOGFILE
 
 cd /app 
 unzip /tmp/catalogue.zip
 
-VALIDATE $? "unzipping catalouge" &>> $LOGFILE
+VALIDATE $? "unzipping catalogue" &>> $LOGFILE
 
 npm install
 
 VALIDATE $? "installing dependencies" &>> $LOGFILE
 
 #use obsolute path
-cp /home/centos/roboshop-shell/catalouge.service /etc/systemd/system/catalogue.service
+cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service
 
-VALIDATE $? "copying catalouge.service file" &>> $LOGFILE
+VALIDATE $? "copying catalogue.service file" &>> $LOGFILE
 
 systemctl daemon-reload
 
