@@ -33,15 +33,12 @@ else
 fi
 
 dnf module disable nodejs -y &>> $LOGFILE
-
 VALIDATE $? "disabling default nodejs"
 
 dnf module enable nodejs:18 -y &>> $LOGFILE
-
 VALIDATE $? "enableing nodejs:18"
 
 dnf install nodejs -y &>> $LOGFILE
-
 VALIDATE $? "installing NodeJs:18" 
 
 id roboshop
@@ -53,20 +50,20 @@ else
     echo -e "roboshop user already exist $Y SKIPPING $N"
 fi
 
-dnf module disable mysql -y
+dnf module disable mysql -y &>> $LOGFILE
 VALIDATE $? "disabling current mysql version"
 
-cp /home/centos/roboshop-shell/mysql.repo /etc/yum.repos.d/mysql.repo
+cp /home/centos/roboshop-shell/mysql.repo /etc/yum.repos.d/mysql.repo &>> $LOGFILE
 VALIDATE $? "copied mysql.repo"
 
-dnf install mysql-community-server -y
+dnf install mysql-community-server -y &>> $LOGFILE
 VALIDATE $? "Installing mysql server"
 
-systemctl enable mysqld
+systemctl enable mysqld &>> $LOGFILE
 VALIDATE $? "enabling mysql server"
 
-systemctl start mysqld
+systemctl start mysqld &>> $LOGFILE
 VALIDATE $? "starting mysql server"
 
-mysql_secure_installation --set-root-pass RoboShop@1
+mysql_secure_installation --set-root-pass RoboShop@1 &>> $LOGFILE
 VALIDATE $? "setting mysql root passwd"
