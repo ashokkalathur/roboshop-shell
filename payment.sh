@@ -53,7 +53,7 @@ else
     echo -e "roboshop user already exist $Y SKIPPING $N"
 fi
 
-dnf install python36 gcc python3-devel -y
+dnf install python36 gcc python3-devel -y &>> $LOGFILE
 
 id roboshop
 if [ $? -ne 0 ]
@@ -65,24 +65,30 @@ else
 fi
 
 mkdir -p /app &>> $LOGFILE
-
 VALIDATE $? "creating app directory"
 
-curl -L -o /tmp/payment.zip https://roboshop-builds.s3.amazonaws.com/payment.zip
+curl -L -o /tmp/payment.zip https://roboshop-builds.s3.amazonaws.com/payment.zip &>> $LOGFILE
+VALIDATE $? "Downloading payment"
 
 cd /app
 
-unzip -o /tmp/payment.zip
+unzip -o /tmp/payment.zip &>> $LOGFILE
+VALIDATE $? "unzipping payment"
 
-pip3.6 install -r requirements.txt
+pip3.6 install -r requirements.txt &>> $LOGFILE
+VALIDATE $? "installing dependencies"
 
-cp /home/centos/roboshop-shell/payment.service /etc/systemd/system/payment.service
+cp /home/centos/roboshop-shell/payment.service /etc/systemd/system/payment.service &>> $LOGFILE
+VALIDATE $? "copying payment service"
 
-systemctl daemon-reload
+systemctl daemon-reload &>> $LOGFILE
+VALIDATE $? "demon reload"
 
-systemctl enable payment 
+systemctl enable payment &>> $LOGFILE
+VALIDATE $? "enabling reload" 
 
-systemctl start payment
+systemctl start payment &>> $LOGFILE
+VALIDATE $? "starting payment"
 
 
 
