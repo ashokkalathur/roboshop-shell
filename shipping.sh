@@ -48,35 +48,35 @@ VALIDATE $? "creating app directory"
 curl -L -o /tmp/shipping.zip https://roboshop-builds.s3.amazonaws.com/shipping.zip &>> $LOGFILE
 version $? "downloading shipping"
 
-cd /app
+cd /app &>> $LOGFILE
 version $? "changing to app dir"
 
-unzip -o /tmp/shipping.zip
+unzip -o /tmp/shipping.zip &>> $LOGFILE
 version $? "unzipping shipping"
 
-mvn clean package
+mvn clean package &>> $LOGFILE
 version $? "installing dependencies"
 
-mv target/shipping-1.0.jar shipping.jar
+mv target/shipping-1.0.jar shipping.jar &>> $LOGFILE
 version $? "renaming jar file"
 
-cp /home/centos/roboshop-shell/shipping.service /etc/systemd/system/shipping.service
+cp /home/centos/roboshop-shell/shipping.service /etc/systemd/system/shipping.service &>> $LOGFILE
 version $? "copying shipping  service"
 
-systemctl daemon-reload
+systemctl daemon-reload &>> $LOGFILE
 version $? "demon reload"
 
-systemctl enable shipping 
+systemctl enable shipping &>> $LOGFILE
 version $? "enable shipping"
 
-systemctl start shipping
+systemctl start shipping &>> $LOGFILE
 version $? "start shipping"
 
-dnf install mysql -y
+dnf install mysql -y &>> $LOGFILE
 version $? "installing mysql client"
 
-mysql -h mysql.cloud6.online -uroot -pRoboShop@1 < /app/schema/shipping.sql
+mysql -h mysql.cloud6.online -uroot -pRoboShop@1 < /app/schema/shipping.sql &>> $LOGFILE
 version $? "loading shipping database"
 
-systemctl restart shipping
+systemctl restart shipping &>> $LOGFILE
 version $? "restarting shipping"
