@@ -70,5 +70,3 @@ VALIDATE $? "starting mysql server"
 
 mysql_secure_installation --set-root-pass RoboShop@1
 VALIDATE $? "setting mysql root passwd"
-
-
