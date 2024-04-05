@@ -72,10 +72,10 @@ VALIDATE $? "enable shipping"
 systemctl start shipping &>> $LOGFILE
 VALIDATE $? "start shipping"
 
-dnf install mysql -y 2>/dev/null &>> $LOGFILE
+dnf install mysql -y &>> $LOGFILE
 VALIDATE $? "installing mysql client"
 
-mysql -h mysql.cloud6.online -uroot -pRoboShop@1 < /app/schema/shipping.sql &>> $LOGFILE
+mysql -h mysql.cloud6.online -uroot -pRoboShop@1 < /app/schema/shipping.sql 2>/dev/null &>> $LOGFILE
 VALIDATE $? "loading shipping database"
 
 systemctl restart shipping &>> $LOGFILE
