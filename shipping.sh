@@ -42,41 +42,41 @@ else
     echo -e "roboshop user already exist $Y SKIPPING $N"
 fi
 
-mkdir /app &>> $LOGFILE
+mkdir -p /app &>> $LOGFILE
 VALIDATE $? "creating app directory"
 
 curl -L -o /tmp/shipping.zip https://roboshop-builds.s3.amazonaws.com/shipping.zip &>> $LOGFILE
-version $? "downloading shipping"
+VALIDATE $? "downloading shipping"
 
 cd /app &>> $LOGFILE
-version $? "changing to app dir"
+VALIDATE $? "changing to app dir"
 
 unzip -o /tmp/shipping.zip &>> $LOGFILE
-version $? "unzipping shipping"
+VALIDATE $? "unzipping shipping"
 
 mvn clean package &>> $LOGFILE
-version $? "installing dependencies"
+VALIDATE $? "installing dependencies"
 
 mv target/shipping-1.0.jar shipping.jar &>> $LOGFILE
-version $? "renaming jar file"
+VALIDATE $? "renaming jar file"
 
 cp /home/centos/roboshop-shell/shipping.service /etc/systemd/system/shipping.service &>> $LOGFILE
-version $? "copying shipping  service"
+VALIDATE $? "copying shipping  service"
 
 systemctl daemon-reload &>> $LOGFILE
-version $? "demon reload"
+VALIDATE $? "demon reload"
 
 systemctl enable shipping &>> $LOGFILE
-version $? "enable shipping"
+VALIDATE $? "enable shipping"
 
 systemctl start shipping &>> $LOGFILE
-version $? "start shipping"
+VALIDATE $? "start shipping"
 
 dnf install mysql -y &>> $LOGFILE
-version $? "installing mysql client"
+VALIDATE $? "installing mysql client"
 
 mysql -h mysql.cloud6.online -uroot -pRoboShop@1 < /app/schema/shipping.sql &>> $LOGFILE
-version $? "loading shipping database"
+VALIDATE $? "loading shipping database"
 
 systemctl restart shipping &>> $LOGFILE
-version $? "restarting shipping"
+VALIDATE $? "restarting shipping"
